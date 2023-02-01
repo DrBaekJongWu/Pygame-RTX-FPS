@@ -70,6 +70,6 @@ while running:
 
             # Render scene
     pygame.display.flip()
-
+print("HELLO")
 # Clean up
 pygame.quit()
