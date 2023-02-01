@@ -1,0 +1,157 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "definitions": {
+        "project": {
+            "markdownDescription": "Container for all project settings",
+            "type": "object",
+            "properties": {
+                "platform": {
+                    "$ref": "#/definitions/project/properties/platform",
+                    "markdownDescription": "VEX Platform type",
+                    "type": "string",
+                    "enum": [
+                        "EXP",
+                        "IQ2",
+                        "V5"
+                    ]
+                },
+                "name": {
+                    "$ref": "#/definitions/project/properties/name",
+                    "markdownDescription": "Project Name",
+                    "descriptionHint": "Markdown text between `` should not be translated or localized (they represent literal text) and the capitalization, spacing, and punctuation (including the ``) should not be altered.",
+                    "type": "string"
+                },
+                "description": {
+                    "$ref": "#/definitions/project/properties/description",
+                    "markdownDescription": "A string describing the project",
+                    "descriptionHint": "Markdown text between `` should not be translated or localized (they represent literal text) and the capitalization, spacing, and punctuation (including the ``) should not be altered.",
+                    "type": "string"
+                },
+                "creationDate":{
+                    "$ref": "#/definitions/project/properties/creationDate",
+                    "markdownDescription": "Date that the project was created on",
+                    "type": "string" 
+                },
+                "sdkVersion": {
+                    "description": "SDK Version",
+                    "type": "string",
+                    "default": ""
+
+                },
+                "cpp": {
+                    "type": "object",
+                    "properties": {
+        
+                        "includePath": {
+                            "markdownDescription": "A list of paths to include in build enviroment.",
+                            "descriptionHint": "Markdown text between `` should not be translated or localized (they represent literal text) and the capitalization, spacing, and punctuation (including the ``) should not be altered.",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                          
+                            "additionalProperties": false
+                        }
+                       
+
+
+    
+                    }
+                    
+                },
+                "python": {
+                    "type": "object",
+                    "properties": {
+        
+                        "main": {
+                            "markdownDescription": "Path to python file to download to brain",
+                            "descriptionHint": "Markdown text between `` should not be translated or localized (they represent literal text) and the capitalization, spacing, and punctuation (including the ``) should not be altered.",
+                            "type": "string",
+                            "default":""
+                          
+                        }
+                       
+
+
+    
+                    }
+                    
+                },
+                "language": {
+                    "$ref": "#/definitions/project/properties/language",
+                    "markdownDescription": "Project Language",
+                    "type": "string",   
+                    "enum": [
+                        "cpp",
+                        "python"
+                    ]              
+                },
+                "slot": {
+                    "$ref": "#/definitions/project/properties/slot",
+                    "markdownDescription": "The slot the user program will be downloaded to",
+                    "type": "integer",
+                    "enum": [
+                        1,2,3,4,5,6,7,8
+                    ]
+
+                },
+                "enableConfigurationSquiggles": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Controls whether the extension will report errors detected in `vex_project_settings.json`.",
+                    "descriptionHint": "Markdown text between `` should not be translated or localized (they represent literal text) and the capitalization, spacing, and punctuation (including the ``) should not be altered."
+                }
+
+
+            },
+            "required": [
+                "platform",
+                "name",
+                "description",
+                "creationDate",
+                "slot",
+                "language"
+            ]
+
+        },
+        "extension": {
+            "markdownDescription": "extension version properties (readonly don't modify)",
+            "type": "object",
+            "properties": {
+                "version":{
+                    "$ref": "#/definitions/extension/properties/version",
+                    "markdownDescription": "extension version (readonly don't modify)",
+                    "type": "string"
+                },
+                "json":{
+                    "$ref": "#/definitions/extension/properties/json",
+                    "markdownDescription": "extension json version (readonly don't modify)",
+                    "type": "number"
+                }
+              
+            },
+            "required": [
+                "version",
+                "json"
+            ]
+        }
+
+    },
+    "properties": {
+       
+        "project": {
+            "$ref": "#/definitions/project"
+        },
+        "extension": {
+            "$ref": "#/definitions/extension"
+        }
+
+
+    },
+    "required": [
+        "project",
+        "extension"
+    ],
+    "additionalProperties": false
+}
