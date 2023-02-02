@@ -216,18 +216,19 @@ while True:
   plt.draw()
   plt.pause(0.0001)
   plt.clf()
-  key = keyboard.read_key()
   x, y = (cx, cy)
-  if key == 'up':
-    x, y = (x + 0.3*np.cos (rot), y + 0.3*np.sin (rot) )
-  elif key == 'down':
-    x, y = (x - 0.3*np.cos (rot) , y - 0.3*np.sin(rot) )
-  elif key == 'left':
-    rot = rot - np.pi/12
-  elif key =='right':
-    rot = rot + np.pi/12
-  elif key == 'esc':
-    break
+  for event in pygame.event.get():
+    key = pygame.key.get_pressed()
+    if key[pygame.K_UP]:
+        x, y = (x + 0.3*np.cos (rot), y + 0.3*np.sin (rot) )
+    elif key[pygame.K_DOWN]:
+        x, y = (x - 0.3*np.cos (rot) , y - 0.3*np.sin(rot) )
+    elif key[pygame.K_LEFT]:
+        rot = rot - np.pi/12
+    elif key[pygame.K_RIGHT]:
+        rot = rot + np.pi/12
+    elif key[pygame.K_ESCAPE]:
+        break
   if map [int (x)] [int (y) ] == 0:
     
     if int(cx) == exitx and int(cy) == exity:
