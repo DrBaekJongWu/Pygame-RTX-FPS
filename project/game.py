@@ -178,42 +178,63 @@ pygame.quit()
 
 
 import numpy as np
+import numpy as np
 import keyboard
 from matplotlib import pyplot as plt
 
-map = [
-  [1,1,1,1,1],
-  [1,0,0,0,1],
-  [1,0,1,0,1],
-  [1,0,0,0,1],
-  [1,1,1,1,1]
-]
+map = [[1, 1, 1, 1, 1], 
+       [1, 0, 0, 0, 1],
+       [1, 0, 1, 0, 1], 
+       [1, 0, 0, 0, 1],
+       [1, 1, 1, 1, 1]]
 #PI shortcut
 pi = np.pi
 #camera position and angle
-cx, cy = (1,1)
-rot = pi/4
+cx, cy = (1, 1)
+exitx, exity = (3,3)
+rot = pi / 4
 while True:
   for i in range(60):
     #index in player FOV
-    roti = rot + np.deg2rad(i-30) #SUBRACT BY HALF OF RANGE OR ELSE IT BREAKS!!!!!
+    roti = rot + np.deg2rad(
+      i - 30)  #SUBRACT BY HALF OF RANGE OR ELSE IT BREAKS!!!!!
     #Initial ray pos
-    x, y = (cx,cy)
+    x, y = (cx, cy)
     #Sin and Cos functions to determine ray length
-    sin, cos = (0.02*np.sin(roti), 0.02*np.cos(roti)) #multiply by 2/100 to decrease increment size to prevent pass throughs
+    sin, cos = (
+      0.02 * np.sin(roti), 0.02 * np.cos(roti)
+    )  #multiply by 2/100 to decrease increment size to prevent pass throughs
     n = 0
     while True:
       #updating ray size and direction
-      x, y  =(x+ cos, y + sin)
-      n = n +1
+      x, y = (x + cos, y + sin)
+      n = n + 1
       if map[int(x)][int(y)] != 0:
-        h = 1/(n*0.02)
+        h = 1 / (n * 0.02)
         break
-    plt.vlines(i, -h, h, lw = 7.5)
+    plt.vlines(i, -h, h, lw=8)
   plt.axis("off")
   plt.tight_layout()
-  plt.axis([0,60,-1,1])
+  plt.axis([0, 60, -1, 1])
   plt.draw()
   plt.pause(0.0001)
   plt.clf()
+  key = keyboard.read_key()
+  x, y = (cx, cy)
+  if key == 'up':
+    x, y = (x + 0.3*np.cos (rot), y + 0.3*np.sin (rot) )
+  elif key == 'down':
+    x, y = (x - 0.3*np.cos (rot) , y - 0.3*np.sin(rot) )
+  elif key == 'left':
+    rot = rot - np.pi/12
+  elif key =='right':
+    rot = rot + np.pi/12
+  elif key == 'esc':
+    break
+  if map [int (x)] [int (y) ] == 0:
+    
+    if int(cx) == exitx and int(cy) == exity:
+      break
+    cx, cy = (x,y)
+  
 plt.close()
