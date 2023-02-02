@@ -176,9 +176,9 @@ while running:
 pygame.quit()
 '''
 import numpy as np
-import keyboard
+import pygame
 from matplotlib import pyplot as plt
-
+pygame.init()
 map = [[1, 1, 1, 1, 1, 1, 1], 
        [1, 0, 1, 0, 0, 0, 1],
        [1, 0, 1, 1, 1, 0, 1], 
