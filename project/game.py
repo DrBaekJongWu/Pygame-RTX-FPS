@@ -175,23 +175,20 @@ while running:
 # Clean up
 pygame.quit()
 '''
-
-
-import numpy as np
 import numpy as np
 import keyboard
 from matplotlib import pyplot as plt
 
-map = [[1, 1, 1, 1, 1], 
-       [1, 0, 0, 0, 1],
-       [1, 0, 1, 0, 1], 
-       [1, 0, 0, 0, 1],
-       [1, 1, 1, 1, 1]]
+map = [[1, 1, 1, 1, 1, 1, 1], 
+       [1, 0, 1, 0, 0, 0, 1],
+       [1, 0, 1, 1, 1, 0, 1], 
+       [1, 0, 0, 0, 0, 0, 1],
+       [1, 1, 1, 1, 1, 1, 1]]
 #PI shortcut
 pi = np.pi
 #camera position and angle
 cx, cy = (1, 1)
-exitx, exity = (3,3)
+exitx, exity = (1,3)
 rot = pi / 4
 while True:
   for i in range(60):
@@ -212,7 +209,7 @@ while True:
       if map[int(x)][int(y)] != 0:
         h = 1 / (n * 0.02)
         break
-    plt.vlines(i, -h, h, lw=8)
+    plt.vlines(i, -h/2, h/2, lw=8)
   plt.axis("off")
   plt.tight_layout()
   plt.axis([0, 60, -1, 1])
