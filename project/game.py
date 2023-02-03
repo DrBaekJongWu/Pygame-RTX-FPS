@@ -177,10 +177,10 @@ pygame.quit()
 '''
 
 import numpy as np
-import pygame
+import keyboard
 from matplotlib import pyplot as plt
 import random
-size = 10
+size = 20
 map = []
 for i in range(size):
     map.append([])
@@ -236,6 +236,7 @@ while True:
   plt.pause(0.001)
   plt.clf()
   x, y = (cx, cy)
+  key = keyboard.read_key()
   if key == 'up':
     x, y = (x + 0.3*np.cos (rot), y + 0.3*np.sin (rot) )
   if key == 'down':
