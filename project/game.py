@@ -179,7 +179,6 @@ pygame.quit()
 import numpy as np
 import keyboard
 from matplotlib import pyplot as plt
-import random
 size = 20
 map = []
 for i in range(size):
@@ -215,8 +214,8 @@ def is_occluded(x, y, rot, map, increment=0.02):
         return False
 
 while True:
-  for i in range(0,60,3):
-    roti = rot + np.deg2rad(i - 30)
+  for i in range(0,70, 2):
+    roti = rot + np.deg2rad(i - 35)
     x, y = (cx, cy)
     sin, cos = (np.sin(roti), np.cos(roti))
     n = 0
@@ -224,14 +223,16 @@ while True:
       x, y = (x + cos * 0.025, y + sin * 0.025)
       n = n + 1
       if map[int(x)][int(y)] != 0:
-        h = 1 / (n * 0.02)
+        h = np.clip(1 / (n * 0.02), 0, 1)
+        c = np.asarray(map[int(x)][int(y)])*(0.3+0.7*h**2)
         break
+    
     if not is_occluded(cx, cy, roti, map, increment=0.02):
-        
-        plt.vlines(i, -h, h, lw=20,)
+        print(exitx,exity, " : ", int(cx), int(cy))
+        plt.vlines(i, -h, h, lw=13, colors = c)
   plt.axis("off")
   plt.tight_layout()
-  plt.axis([0, 60, -1, 1])
+  plt.axis([0, 70, -1, 1])
   plt.draw()
   plt.pause(0.001)
   plt.clf()
@@ -242,11 +243,11 @@ while True:
   if key == 'down':
     x, y = (x - 0.3*np.cos (rot) , y - 0.3*np.sin(rot) )
   if key == 'left':
-    for i in range(60):
-        rot = rot - pi/800
+    for i in range(5):
+        rot = rot - pi/180
   if key =='right':
-    for i in range(60):
-        rot = rot + pi/800
+    for i in range(5):
+        rot = rot + pi/180
   if key == 'esc':
     break
   if map [int (x)] [int (y) ] == 0:
