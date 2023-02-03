@@ -179,7 +179,7 @@ pygame.quit()
 import numpy as np
 import keyboard
 from matplotlib import pyplot as plt
-size = 20
+size = 50
 map = []
 for i in range(size):
     map.append([])
@@ -237,10 +237,14 @@ while True:
       if map[int(x)][int(y)] != 0:
         h = np.clip(1 / (n * 0.02), 0, 1)
         c = np.asarray(map[int(x)][int(y)])*(0.3+0.7*h**2)
+        if x > 0 and y > 0:
+            if map[int(x+1)][int(y)] == 0 and map[int(x-1)][int(y)] == 0 and map[int(x)][int(y)+1] == 0 and map[int(x)][int(y)-1] == 0:
+                c = (0.5,0,0, 0.5)
         break
     
     if not is_occluded(cx, cy, roti, map, increment=0.02):
         print(exitx,exity, " : ", int(cx), int(cy))
+
     plt.vlines(i, -h, h, lw=15, colors = c)
   
   plt.axis("off")
