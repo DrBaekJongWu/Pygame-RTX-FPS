@@ -215,8 +215,8 @@ def is_occluded(x, y, rot, map, increment=0.02):
         return False
 
 while True:
-  plt.hlines(-0.6, 0, 70, colors= "gray", lw = 175, alpha = 0.5)
-  plt.hlines(0.6, 0, 70, colors= "lightblue", lw = 175, alpha = 0.5)
+  plt.hlines(-0.6, 0, 70, colors= "gray", lw = 205, alpha = 0.5)
+  plt.hlines(0.6, 0, 70, colors= "lightblue", lw = 205, alpha = 0.5)
   tilex, tiley, tilec = ([],[],[])
   for i in range(0,70, 2):
     roti = rot + np.deg2rad(i - 30)
@@ -233,13 +233,13 @@ while True:
         if int(x) == exitx and int(y) == exity:
             tilec.append("b")
         else:    
-            tilec.append('w')
+            tilec.append('k')
       if map[int(x)][int(y)] != 0:
         h = np.clip(1 / (n * 0.02), 0, 1)
         c = np.asarray(map[int(x)][int(y)])*(0.3+0.7*h**2)
         if x > 0 and y > 0:
             if map[int(x+1)][int(y)] == 0 and map[int(x-1)][int(y)] == 0 and map[int(x)][int(y)+1] == 0 and map[int(x)][int(y)-1] == 0:
-                c = (0.5,0,0, 0.5)
+                c = (0.65,0,0, 0.75)
         break
     
     if not is_occluded(cx, cy, roti, map, increment=0.02):
@@ -262,10 +262,10 @@ while True:
   if key == 'down':
     x, y = (x - 0.3*np.cos (rot) , y - 0.3*np.sin(rot) )
   if key == 'left':
-    for i in range(5):
+    for i in range(7):
         rot = rot - pi/180
   if key =='right':
-    for i in range(5):
+    for i in range(7):
         rot = rot + pi/180
   if key == 'esc':
     break
