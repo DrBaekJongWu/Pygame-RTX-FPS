@@ -192,6 +192,7 @@ cx, cy = (1, np.random.randint(1,size-1))
 map[cx][cy] = 0
 x, y = (cx, cy)
 rot = pi / 4
+
 while True:
     testx, testy = (x, y)
     if(np.random.uniform() > 0.5):
@@ -214,14 +215,25 @@ def is_occluded(x, y, rot, map, increment=0.02):
         return False
 
 while True:
+  plt.hlines(-0.6, 0, 70, colors= "gray", lw = 175, alpha = 0.5)
+  plt.hlines(0.6, 0, 70, colors= "lightblue", lw = 175, alpha = 0.5)
+  tilex, tiley, tilec = ([],[],[])
   for i in range(0,70, 2):
-    roti = rot + np.deg2rad(i - 35)
+    roti = rot + np.deg2rad(i - 30)
     x, y = (cx, cy)
     sin, cos = (np.sin(roti), np.cos(roti))
     n = 0
     while True:
+      xx, yy = (x, y)
       x, y = (x + cos * 0.025, y + sin * 0.025)
       n = n + 1
+      if abs(int(3*xx)-int(3*x)) > 0 or abs(int(3*yy)-int(3*y)) > 0:
+        tilex.append(i)
+        tiley.append(-1/(n*0.02))
+        if int(x) == exitx and int(y) == exity:
+            tilec.append("b")
+        else:    
+            tilec.append('w')
       if map[int(x)][int(y)] != 0:
         h = np.clip(1 / (n * 0.02), 0, 1)
         c = np.asarray(map[int(x)][int(y)])*(0.3+0.7*h**2)
@@ -229,12 +241,15 @@ while True:
     
     if not is_occluded(cx, cy, roti, map, increment=0.02):
         print(exitx,exity, " : ", int(cx), int(cy))
-        plt.vlines(i, -h, h, lw=13, colors = c)
+    plt.vlines(i, -h, h, lw=15, colors = c)
+  
   plt.axis("off")
   plt.tight_layout()
-  plt.axis([0, 70, -1, 1])
+  plt.axis([0,70, -1, 1])
+  plt.scatter(tilex, tiley, c = tilec)
   plt.draw()
   plt.pause(0.001)
+  
   plt.clf()
   x, y = (cx, cy)
   key = keyboard.read_key()
