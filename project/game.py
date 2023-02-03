@@ -175,61 +175,81 @@ while running:
 # Clean up
 pygame.quit()
 '''
+
 import numpy as np
 import keyboard
 from matplotlib import pyplot as plt
-
-map = [[1, 1, 1, 1, 1, 1, 1], 
-       [1, 0, 1, 0, 0, 0, 1],
-       [1, 0, 1, 1, 1, 0, 1], 
-       [1, 0, 0, 0, 0, 0, 1],
-       [1, 1, 1, 1, 1, 1, 1]]
+import random
+size = 10
+map = []
+for i in range(size):
+    map.append([])
+    for j in range(size):
+        map[i].append(list(np.random.uniform(0,1,3)))
 #PI shortcut
 pi = np.pi
 #camera position and angle
-cx, cy = (1, 1)
-exitx, exity = (1,3)
+cx, cy = (1, np.random.randint(1,size-1))
+map[cx][cy] = 0
+x, y = (cx, cy)
 rot = pi / 4
 while True:
-  for i in range(60):
-    #index in player FOV
-    roti = rot + np.deg2rad(
-      i - 30)  #SUBRACT BY HALF OF RANGE OR ELSE IT BREAKS!!!!!
-    #Initial ray pos
+    testx, testy = (x, y)
+    if(np.random.uniform() > 0.5):
+        testx = testx + np.random.choice([-1,1])
+    else:
+        testy = testy + np.random.choice([-1,1])
+    if testx > 0 and testx < size -1 and testy > 0 and testy < size -1:
+        x, y = (testx, testy)
+        map[x][y] = 0
+        if x == size -2:
+            exitx, exity = (x,y)
+            break
+def is_occluded(x, y, rot, map, increment=0.02):
+  sin, cos = (np.sin(rot), np.cos(rot))
+  while True:
+    X, Y = (x + cos * increment, y + sin * increment)
+    if map[int(X)][int(Y)] != 0:
+      return True
+    else:
+        return False
+
+while True:
+  for i in range(0,60,3):
+    roti = rot + np.deg2rad(i - 30)
     x, y = (cx, cy)
-    #Sin and Cos functions to determine ray length
-    sin, cos = (
-      0.02 * np.sin(roti), 0.02 * np.cos(roti)
-    )  #multiply by 2/100 to decrease increment size to prevent pass throughs
+    sin, cos = (np.sin(roti), np.cos(roti))
     n = 0
     while True:
-      #updating ray size and direction
-      x, y = (x + cos, y + sin)
+      x, y = (x + cos * 0.025, y + sin * 0.025)
       n = n + 1
       if map[int(x)][int(y)] != 0:
         h = 1 / (n * 0.02)
         break
-    plt.vlines(i, -h/2, h/2, lw=8)
+    if not is_occluded(cx, cy, roti, map, increment=0.02):
+        
+        plt.vlines(i, -h, h, lw=20,)
   plt.axis("off")
   plt.tight_layout()
   plt.axis([0, 60, -1, 1])
   plt.draw()
-  plt.pause(0.0001)
+  plt.pause(0.001)
   plt.clf()
   key = keyboard.read_key()
   x, y = (cx, cy)
   if key == 'up':
     x, y = (x + 0.3*np.cos (rot), y + 0.3*np.sin (rot) )
-  elif key == 'down':
+  if key == 'down':
     x, y = (x - 0.3*np.cos (rot) , y - 0.3*np.sin(rot) )
-  elif key == 'left':
-    rot = rot - np.pi/12
-  elif key =='right':
-    rot = rot + np.pi/12
-  elif key == 'esc':
+  if key == 'left':
+    for i in range(60):
+        rot = rot - pi/800
+  if key =='right':
+    for i in range(60):
+        rot = rot + pi/800
+  if key == 'esc':
     break
   if map [int (x)] [int (y) ] == 0:
-    
     if int(cx) == exitx and int(cy) == exity:
       break
     cx, cy = (x,y)
