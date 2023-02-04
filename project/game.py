@@ -170,7 +170,7 @@ running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+             running = False
 
 # Clean up
 pygame.quit()
@@ -180,7 +180,9 @@ import numpy as np
 import keyboard
 from matplotlib import pyplot as plt
 size = 50
+shootindex = 0
 map = []
+shooting = False
 for i in range(size):
     map.append([])
     for j in range(size):
@@ -190,6 +192,8 @@ pi = np.pi
 #camera position and angle
 cx, cy = (1, np.random.randint(1,size-1))
 map[cx][cy] = 0
+ex = []
+ey = []
 x, y = (cx, cy)
 rot = pi / 4
 
@@ -219,6 +223,7 @@ while True:
   plt.hlines(0.6, 0, 70, colors= "lightblue", lw = 205, alpha = 0.5)
   tilex, tiley, tilec = ([],[],[])
   for i in range(0,70, 2):
+    shooting = False
     roti = rot + np.deg2rad(i - 30)
     x, y = (cx, cy)
     sin, cos = (np.sin(roti), np.cos(roti))
@@ -239,11 +244,16 @@ while True:
         c = np.asarray(map[int(x)][int(y)])*(0.3+0.7*h**2)
         if x > 0 and y > 0:
             if map[int(x+1)][int(y)] == 0 and map[int(x-1)][int(y)] == 0 and map[int(x)][int(y)+1] == 0 and map[int(x)][int(y)-1] == 0:
-                c = (0.65,0,0, 0.75)
+                    if not((int(x), int(y)) in ex):
+                        ex = ([(int(x), int(y))])
+
+                        
+                    
+                    c = (0.65,0,0, 0.75)
         break
     
-    if not is_occluded(cx, cy, roti, map, increment=0.02):
-        print(exitx,exity, " : ", int(cx), int(cy))
+    #if not is_occluded(cx, cy, roti, map, increment=0.02):
+           #continue
 
     plt.vlines(i, -h, h, lw=15, colors = c)
   
@@ -258,9 +268,9 @@ while True:
   x, y = (cx, cy)
   key = keyboard.read_key()
   if key == 'up':
-    x, y = (x + 0.3*np.cos (rot), y + 0.3*np.sin (rot) )
+    x, y = (x + 0.5*np.cos (rot), y + 0.5*np.sin (rot) )
   if key == 'down':
-    x, y = (x - 0.3*np.cos (rot) , y - 0.3*np.sin(rot) )
+    x, y = (x - 0.5*np.cos (rot) , y - 0.5*np.sin(rot) )
   if key == 'left':
     for i in range(7):
         rot = rot - pi/180
@@ -269,7 +279,17 @@ while True:
         rot = rot + pi/180
   if key == 'esc':
     break
-  if map [int (x)] [int (y) ] == 0:
+  if key == "space":
+    shooting = True
+  if shooting:
+    while shootindex < 5:
+     print(shootindex)
+     if [(int(x + shootindex*np.cos (rot)), int( y + shootindex*np.sin (rot)))] == ex:
+        map[int(x + shootindex*np.cos (rot))][ int( y +shootindex*np.sin (rot))] =0
+     shootindex = shootindex + 0.25
+    shootindex = 0
+
+  if map [int (x)] [int (y) ] == 0 :
     if int(cx) == exitx and int(cy) == exity:
       break
     cx, cy = (x,y)
