@@ -179,6 +179,14 @@ pygame.quit()
 import numpy as np
 import keyboard
 from matplotlib import pyplot as plt
+import torch
+
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+    print("Using GPU:", torch.cuda.get_device_name(0))
+else:
+    device = torch.device("cpu")
+    print("Using CPU")
 size = 50
 shootindex = 0
 map = []
