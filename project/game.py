@@ -190,6 +190,7 @@ else:
 size = 50
 shootindex = 0
 map = []
+
 shooting = False
 for i in range(size):
     map.append([])
@@ -201,14 +202,15 @@ pi = np.pi
 cx, cy = (1, np.random.randint(1,size-1))
 map[cx][cy] = 0
 ex = []
-ey = []
+hp = []
+
 x, y = (cx, cy)
 rot = pi / 4
 
 while True:
     testx, testy = (x, y)
     if(np.random.uniform() > 0.5):
-        testx = testx + np.random.choice([-1,1])
+        testx = testx + np.random.choice([-1,1]) 
     else:
         testy = testy + np.random.choice([-1,1])
     if testx > 0 and testx < size -1 and testy > 0 and testy < size -1:
@@ -227,12 +229,12 @@ def is_occluded(x, y, rot, map, increment=0.02):
         return False
 
 while True:
-  plt.hlines(-0.6, 0, 70, colors= "gray", lw = 205, alpha = 0.5)
-  plt.hlines(0.6, 0, 70, colors= "lightblue", lw = 205, alpha = 0.5)
+  plt.hlines(-0.6, 0, 70, colors= "gray", lw = 210, alpha = 0.5)
+  plt.hlines(0.6, 0, 70, colors= "lightblue", lw = 210, alpha = 0.5)
   tilex, tiley, tilec = ([],[],[])
   for i in range(0,70, 2):
     shooting = False
-    roti = rot + np.deg2rad(i - 30)
+    roti = rot + np.deg2rad(i - 35)
     x, y = (cx, cy)
     sin, cos = (np.sin(roti), np.cos(roti))
     n = 0
@@ -246,24 +248,28 @@ while True:
         if int(x) == exitx and int(y) == exity:
             tilec.append("b")
         else:    
-            tilec.append('k')
+            tilec.append('w')
       if map[int(x)][int(y)] != 0:
         h = np.clip(1 / (n * 0.02), 0, 1)
         c = np.asarray(map[int(x)][int(y)])*(0.3+0.7*h**2)
-        if x > 0 and y > 0:
+        if x > 0 and y > 0 and x < size -1 and y < size - 1:
             if map[int(x+1)][int(y)] == 0 and map[int(x-1)][int(y)] == 0 and map[int(x)][int(y)+1] == 0 and map[int(x)][int(y)-1] == 0:
-                    if not((int(x), int(y)) in ex):
-                        ex = ([(int(x), int(y))])
+              if [(int(x), int(y))] not in ex:
+                ex.append([(int(x), int(y))])
+                hp.append(10)
+                print(ex, end="\n")
+                print(hp)
+ 
 
                         
                     
-                    c = (0.65,0,0, 0.75)
+              c = (0.65,0,0, 0.75*hp[ex.index([(int(x), int(y))])]/10)
         break
     
     #if not is_occluded(cx, cy, roti, map, increment=0.02):
            #continue
 
-    plt.vlines(i, -h, h, lw=15, colors = c)
+    plt.vlines(i, -h, h, lw=16, colors = c)
   
   plt.axis("off")
   plt.tight_layout()
@@ -275,26 +281,45 @@ while True:
   plt.clf()
   x, y = (cx, cy)
   key = keyboard.read_key()
+  
   if key == 'up':
-    x, y = (x + 0.5*np.cos (rot), y + 0.5*np.sin (rot) )
+    x, y = (x + 0.65*np.cos (rot), y + 0.65*np.sin (rot) )
+    dx = exitx-x
+    dy = exity-y
+    print(int(np.sqrt(dx**2 + dy **2)))
   if key == 'down':
-    x, y = (x - 0.5*np.cos (rot) , y - 0.5*np.sin(rot) )
+    x, y = (x - 0.65*np.cos (rot) , y - 0.65*np.sin(rot) )
+    dx = exitx-x
+    dy = exity-y
+    print(int(np.sqrt(dx**2 + dy **2)))
   if key == 'left':
-    for i in range(7):
+    for i in range(10):
         rot = rot - pi/180
   if key =='right':
-    for i in range(7):
+    for i in range(10):
         rot = rot + pi/180
   if key == 'esc':
     break
   if key == "space":
     shooting = True
   if shooting:
-    while shootindex < 5:
-     print(shootindex)
-     if [(int(x + shootindex*np.cos (rot)), int( y + shootindex*np.sin (rot)))] == ex:
-        map[int(x + shootindex*np.cos (rot))][ int( y +shootindex*np.sin (rot))] =0
-     shootindex = shootindex + 0.25
+    rotx = []
+    while shootindex < 10:
+      for j in range(0, 10):
+        rotx = rot + np.deg2rad(j - 5)
+        for i in range(len(ex)):
+          if(ex[i] == [(int(x + shootindex*np.cos (rotx)), int( y + shootindex*np.sin (rotx)))]):
+            if hp[i] > 0:
+              hp[i] = hp[i]-0.2
+              print(hp[i])
+              break
+            else:
+                ex.remove(ex[i])
+                hp.remove(hp[i])
+                map[int(x + shootindex*np.cos (rotx))][ int( y +shootindex*np.sin (rotx))] = 0
+                break
+            
+      shootindex = shootindex + 0.5
     shootindex = 0
 
   if map [int (x)] [int (y) ] == 0 :
@@ -303,3 +328,5 @@ while True:
     cx, cy = (x,y)
   
 plt.close()
+
+
