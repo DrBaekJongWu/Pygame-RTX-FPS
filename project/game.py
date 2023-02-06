@@ -229,12 +229,12 @@ def is_occluded(x, y, rot, map, increment=0.02):
         return False
 
 while True:
-  plt.hlines(-0.6, 0, 70, colors= "gray", lw = 210, alpha = 0.5)
-  plt.hlines(0.6, 0, 70, colors= "lightblue", lw = 210, alpha = 0.5)
+  plt.hlines(-0.6, 0, 60, colors= "gray", lw = 210, alpha = 0.5)
+  plt.hlines(0.6, 0, 60, colors= "lightblue", lw = 210, alpha = 0.5)
   tilex, tiley, tilec = ([],[],[])
-  for i in range(0,70, 2):
+  for i in range(0,60,2):
     shooting = False
-    roti = rot + np.deg2rad(i - 35)
+    roti = rot + np.deg2rad(i - 30)
     x, y = (cx, cy)
     sin, cos = (np.sin(roti), np.cos(roti))
     n = 0
@@ -269,11 +269,11 @@ while True:
     #if not is_occluded(cx, cy, roti, map, increment=0.02):
            #continue
 
-    plt.vlines(i, -h, h, lw=16, colors = c)
+    plt.vlines(i/2, -h, h, lw=18, colors = c)
   
   plt.axis("off")
   plt.tight_layout()
-  plt.axis([0,70, -1, 1])
+  plt.axis([0,25, -1, 1])
   plt.scatter(tilex, tiley, c = tilec)
   plt.draw()
   plt.pause(0.001)
@@ -283,12 +283,14 @@ while True:
   key = keyboard.read_key()
   
   if key == 'up':
-    x, y = (x + 0.65*np.cos (rot), y + 0.65*np.sin (rot) )
+    for i in range(10):
+      x, y = (x + 0.055*np.cos (rot), y + 0.055*np.sin (rot) )
     dx = exitx-x
     dy = exity-y
     print(int(np.sqrt(dx**2 + dy **2)))
   if key == 'down':
-    x, y = (x - 0.65*np.cos (rot) , y - 0.65*np.sin(rot) )
+    for i in range(10):
+      x, y = (x - 0.055*np.cos (rot) , y - 0.055*np.sin(rot) )
     dx = exitx-x
     dy = exity-y
     print(int(np.sqrt(dx**2 + dy **2)))
@@ -317,6 +319,7 @@ while True:
                 ex.remove(ex[i])
                 hp.remove(hp[i])
                 map[int(x + shootindex*np.cos (rotx))][ int( y +shootindex*np.sin (rotx))] = 0
+                plt.draw()
                 break
             
       shootindex = shootindex + 0.5
