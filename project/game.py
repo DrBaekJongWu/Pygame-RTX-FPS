@@ -1,3 +1,4 @@
+
 #importing esssential libraries
 import numpy as np
 import keyboard
@@ -35,15 +36,7 @@ hp = []
 
 x, y = (cx, cy)
 rot = pi / 4
-def is_occluded(x, y, rot, map, increment=0.02):
-  sin, cos = (np.sin(rot), np.cos(rot))
-  while True:
-    X, Y = (x + cos * increment, y + sin * increment)
-    if map[int(X)][int(Y)] != 0:
-      return True
-    else:
-        return False
-
+#making better map
 while True:
     testx, testy = (x, y)
     if(np.random.uniform() > 0.5):
@@ -56,20 +49,16 @@ while True:
         if x == size -2:
             exitx, exity = (x,y)
             break
+
 for x in range(1,size-1):
   for y in range(1,size-1):
     if map[int(x)][int(y)] != 0:
         if map[int(x+1)][int(y)] == 0 and map[int(x-1)][int(y)] == 0 and map[int(x)][int(y+1)] == 0 and map[int(x)][int(y-1)] ==0 and [(int(x), int(y))] not in ex:
-          print(map[int(x+1)][int(y)])
-          print(map[int(x-1)][int(y)])
-          print(map[int(x)][int(y+1)])
-          print(map[int(x)][int(y-1)])
-          print(map[int(x)][int(y)])
           ex.append([(int(x), int(y))])
           hp.append(10)
-print(ex)
+#main game loop
 while True:
-  
+   # floor and sky lines
   plt.hlines(-0.6, 0, 60, colors= "gray", lw = 210, alpha = 0.5)
   plt.hlines(0.6, 0, 60, colors= "lightblue", lw = 210, alpha = 0.5)
   tilex, tiley, tilec = ([],[],[])
@@ -83,7 +72,7 @@ while True:
     while True:
         #actual ray tracing
       xx, yy = (x, y)
-      x, y = (x + cos * 0.03, y + sin * 0.03)
+      x, y = (x + cos * 0.025, y + sin * 0.025)
       n = n + 1
         #floor scatter plot (not used)
       if abs(int(3*xx)-int(3*x)) > 0 or abs(int(3*yy)-int(3*y)) > 0:
@@ -94,17 +83,19 @@ while True:
             tilec.append("b")
         else:    
             tilec.append('w')
-      h = np.clip(1 / (n * 0.02), 0, 1)
-      if [(int(x), int(y))] in ex:
-        c = (0.65,0,0, 1.25*hp[ex.index([(int(x), int(y))])]/15)
-        break
       if map[int(x)][int(y)] != 0:
+        #height of lines
+        h = np.clip(1 / (n * 0.02), 0, 1)
+        #random coloring
         c = np.asarray(map[int(x)][int(y)])*(0.3+0.7*h**2)
+            #enemy code
+        if map[int(x+1)][int(y)] == 0 and map[int(x-1)][int(y)] == 0 and map[int(x)][int(y)+1] == 0 and map[int(x)][int(y)-1] == 0:
+              #checking if enemy not already registered
+          if [(int(x), int(y))] in ex:    
+            #setting enemy color to red 
+            c = (0.65,0,0, 0.75*hp[ex.index([(int(x), int(y))])]/10)
         break
-
-     
     
-
     #if not is_occluded(cx, cy, roti, map, increment=0.02):
            #continue
 #drawing
@@ -115,7 +106,7 @@ while True:
   plt.axis([0,25, -1, 1])
   plt.scatter(tilex, tiley, c = tilec)
   plt.draw()
-  plt.pause(0.00005)
+  plt.pause(0.0005)
   
   plt.clf()
   x, y = (cx, cy)
@@ -126,13 +117,13 @@ while True:
       x, y = (x + 0.055*np.cos (rot), y + 0.055*np.sin (rot) )
     dx = exitx-x
     dy = exity-y
-    print(int(np.sqrt(dx**2 + dy **2)))
+ 
   if key == 'down':
     for i in range(10):
       x, y = (x - 0.055*np.cos (rot) , y - 0.055*np.sin(rot) )
     dx = exitx-x
     dy = exity-y
-    print(int(np.sqrt(dx**2 + dy **2)))
+
   if key == 'left':
     for i in range(10):
         rot = rot - pi/180
@@ -145,22 +136,21 @@ while True:
   if key == "space":
     shooting = True
   if shooting:
-    rotx = []
-    
+    rotx = rot
     while shootindex < 10: #shooting distance
         #shooting spread
       for j in range(0, 10):
         rotx = rot + np.deg2rad(j - 5)
         for i in range(len(ex)):
-          if(map[int(x + shootindex*np.cos (rotx))][int( y + shootindex*np.sin (rotx))] != 0 and not (int(x + shootindex*np.cos (rotx)), int( y + shootindex*np.sin (rotx))) in ex):
-            shootindex = 10
-            break
+            #shooting raytracing
+          if(0 != map[int(x + shootindex*np.cos (rotx))][int( y + shootindex*np.sin (rotx))] and [(int(x + shootindex*np.cos (rotx)), int( y + shootindex*np.sin (rotx)))] not in ex):
+              shootindex = 10
+              break
           if(ex[i] == [(int(x + shootindex*np.cos (rotx)), int( y + shootindex*np.sin (rotx)))]):
             #damaging enemies
             if hp[i] > 0:
-              hp[i] = hp[i]-1
-              print(hp[i])
-              shootindex = 10            
+              hp[i] = hp[i]-0.2
+              shootindex == 10
               break
             else:
                 #killing enemies
@@ -179,5 +169,3 @@ while True:
     cx, cy = (x,y)
   
 plt.close()
-
-
