@@ -143,9 +143,10 @@ while True:
         rotx = rot + np.deg2rad(j - 5)
         for i in range(len(ex)):
             #shooting raytracing
-          if(0 != map[int(x + shootindex*np.cos (rotx))][int( y + shootindex*np.sin (rotx))] and [(int(x + shootindex*np.cos (rotx)), int( y + shootindex*np.sin (rotx)))] not in ex):
-              shootindex = 10
-              break
+          if x < (size-2) and y < (size -2) and x > 1 and y > 1:       
+            if(0 != map[int(x + shootindex*np.cos (rotx))][int( y + shootindex*np.sin (rotx))] and [(int(x + shootindex*np.cos (rotx)), int( y + shootindex*np.sin (rotx)))] not in ex):
+                shootindex = 10
+                break
           if(ex[i] == [(int(x + shootindex*np.cos (rotx)), int( y + shootindex*np.sin (rotx)))]):
             #damaging enemies
             if hp[i] > 0:
