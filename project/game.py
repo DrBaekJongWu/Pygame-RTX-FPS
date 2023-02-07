@@ -93,9 +93,14 @@ while True:
               #checking if enemy not already registered
           if [(int(x), int(y))] in ex:    
             #setting enemy color to red 
-            c = (0.65,0,0, 0.75*hp[ex.index([(int(x), int(y))])]/10)
+            o = 0.75*hp[ex.index([(int(x), int(y))])]/10
+            if o < 0:
+              o = 0
+            elif o > 1:
+             o =1 
+            c = (0.7,0,0, o)
         break
-    
+          
     #if not is_occluded(cx, cy, roti, map, increment=0.02):
            #continue
 #drawing
