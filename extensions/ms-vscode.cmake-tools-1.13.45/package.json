@@ -2202,9 +2202,8 @@
 		"publisherDisplayName": "Microsoft",
 		"targetPlatform": "undefined",
 		"isApplicationScoped": false,
-		"updated": true,
+		"updated": false,
 		"isPreReleaseVersion": false,
-		"installedTimestamp": 1675312127348,
-		"preRelease": false
+		"installedTimestamp": 1676239657741
 	}
 }

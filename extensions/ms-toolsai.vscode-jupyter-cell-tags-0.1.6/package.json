@@ -131,6 +131,7 @@
 		"isApplicationScoped": false,
 		"updated": false,
 		"isPreReleaseVersion": false,
-		"installedTimestamp": 1675217125758
+		"installedTimestamp": 1676239099987,
+		"preRelease": false
 	}
 }

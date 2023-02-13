@@ -6006,9 +6006,9 @@
 		"publisherDisplayName": "Microsoft",
 		"targetPlatform": "win32-x64",
 		"isApplicationScoped": false,
-		"updated": true,
+		"updated": false,
 		"isPreReleaseVersion": false,
-		"preRelease": false,
-		"installedTimestamp": 1675210751788
+		"installedTimestamp": 1676239623629,
+		"preRelease": false
 	}
 }

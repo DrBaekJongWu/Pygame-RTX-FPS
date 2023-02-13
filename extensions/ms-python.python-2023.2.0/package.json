@@ -1917,9 +1917,9 @@
 		"publisherId": "998b010b-e2af-44a5-a6cd-0b5fd3b9b6f8",
 		"targetPlatform": "undefined",
 		"isApplicationScoped": false,
-		"updated": true,
+		"updated": false,
 		"isPreReleaseVersion": false,
-		"installedTimestamp": 1675384217123,
+		"installedTimestamp": 1676239099961,
 		"preRelease": false
 	},
 	"extensionPack": [
