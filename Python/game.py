@@ -99,17 +99,17 @@ while True:
             elif o > 1:
              o =1 
             c = (0.7,0,0, o)
-            np.clip()
+
         break
           
     #if not is_occluded(cx, cy, roti, map, increment=0.02):
            #continue
 #drawing
-    plt.vlines(i/2, -h, h, lw=18, colors = c)
+    plt.vlines(i, -h, h, lw=19, colors = c)
   
   plt.axis("off")
   plt.tight_layout()
-  plt.axis([0,30, -1, 1])
+  plt.axis([0,45, -1, 1])
   plt.scatter(tilex, tiley, c = tilec)
   plt.draw()
   plt.pause(0.0005)
@@ -144,8 +144,7 @@ while True:
   if shooting:
     rotx = rot
     while shootindex < 10: #shooting distance
-      plt.vlines(15,-1,1, lw= 10, colors=(0,0,0))
-        #shooting spread
+              #shooting spread
       for j in range(0, 10):
         rotx = rot + np.deg2rad(j - 5)
         for i in range(len(ex)):
